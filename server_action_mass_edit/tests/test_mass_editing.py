@@ -371,7 +371,7 @@ class TestMassEditing(common.TransactionCase):
         """Test Case for MASS EDITING which will remove and add
         Partner's bank o2m."""
         # Set another bank (must replace existing one)
-        bank_vals = {"acc_number": "account number"}
+        bank_vals = {"account_number": "account number"}
         self.user.write(
             {
                 "bank_ids": [(6, 0, []), (0, 0, bank_vals)],
@@ -379,18 +379,18 @@ class TestMassEditing(common.TransactionCase):
         )
         vals = {
             "selection__bank_ids": "set_o2m",
-            "bank_ids": [(0, 0, dict(bank_vals, acc_number="new number"))],
+            "bank_ids": [(0, 0, dict(bank_vals, account_number="new number"))],
         }
         self._create_wizard_and_apply_values(self.mass_editing_user, self.user, vals)
-        self.assertEqual(self.user.bank_ids.acc_number, "new number")
+        self.assertEqual(self.user.bank_ids.account_number, "new number")
         # Add bank (must keep existing one)
         vals = {
             "selection__bank_ids": "add_o2m",
-            "bank_ids": [(0, 0, dict(bank_vals, acc_number="new number2"))],
+            "bank_ids": [(0, 0, dict(bank_vals, account_number="new number2"))],
         }
         self._create_wizard_and_apply_values(self.mass_editing_user, self.user, vals)
         self.assertEqual(
-            self.user.bank_ids.mapped("acc_number"), ["new number", "new number2"]
+            self.user.bank_ids.mapped("account_number"), ["new number", "new number2"]
         )
         # Set empty list (must remove all banks)
         vals = {"selection__bank_ids": "set_o2m"}
